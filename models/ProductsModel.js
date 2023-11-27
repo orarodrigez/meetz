@@ -10,9 +10,7 @@ stock:{required:true,type:int},
 prod_id:{required:true,type:int}
 })
 
-const getAllusers=async()=>{
-    const users= await this.find({})
-}
+
 
 const model= mongoose.model("Product",ProductSchema)
 model.exports=model,{getAllusers};

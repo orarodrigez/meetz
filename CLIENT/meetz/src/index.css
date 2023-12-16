@@ -12,7 +12,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+body {
+  margin: 0;
+  display: flex;
+  place-items: flex;
+  min-width: 120px;
+  min-height: 100vh;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+ 
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -34,7 +43,28 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
+.hh{
+  border-radius: 25px;
+  border: 2px solid rgba(0, 0, 0, 0.18);
+  padding: 20px;
+  box-shadow: 0px 0px 40px rgba(19, 0, 71, 0.4);
+ 
+}
+footer { 
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  right: 0;
+  left: 0;
+  display:flex;
+   justify-Content: center; 
+  align-Items: center;
+  direction:rtl;
+  color:#1976d2; 
+  height:50px;
+   margin:10px; 
+  vertical-Align:text-bottom;
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;

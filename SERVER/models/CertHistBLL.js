@@ -59,7 +59,7 @@ const GetCertProductAmount = async (prod_id,user_id) => {
          return amount
     }
     catch
-    {   console.log("fail to find product "+prod_id)
+    {   console.log("fail to find CertProductAmount "+prod_id)
         return 0
     }
 }
@@ -67,13 +67,20 @@ const GetCertProductAmount = async (prod_id,user_id) => {
 
 
 const GetAllCertByUserId = async (user_id ) => {
-   
-    const certHists= await CertHist.find({user_id:user_id})
+   try
+   {
+        const certHists= await CertHist.find({user_id:user_id})
 
     if (certHists.length>0)
-    return certHists
-   else
-    return null
+        return certHists
+    else
+        return null
+   }
+    catch
+    {   console.log("fail to find AllCertByUserId  "+user_id)
+        return 0
+    }
+
 }
 
 module.exports = {  GetAllCertByUserId, addCertProduct,DeleteCertProduct,GetCertProductAmount }

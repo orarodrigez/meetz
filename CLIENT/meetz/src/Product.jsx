@@ -4,22 +4,22 @@ export default function Product(props) {
   let {product}=props;
 
   return (
-    <div class="hh"> 
+    <div /*class="hh"*/> 
     <RtlProvider>
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        alt={props.name}
+        alt={product.name}
         height="140"
-        image={props.picture}
+        image={product.picture}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-           {props.name}
+           {product.prodName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {
-            props.description
+            product.description
           }
         </Typography>
       </CardContent>

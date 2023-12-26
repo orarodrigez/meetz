@@ -1,33 +1,22 @@
 const Order = require("./OrderModel")
 
-const getOrderId= async()=>
+
+const insertNewOrder = async (order_id,prod_id,price,amount,reciet) => 
 {
     try
     {
-        
-        var max= Orderfind().sort({order_id:-1}).limit(1)
-    
-        return max+1;
-    }
-    catch
-    {   console.log("fail to get max")
-        return 0;
-    }
-}
-const createOrder = async (order_id,prod_id,price,amount,reciet) => 
-{
-    try
-    {
+        if (order_id==0)
+          order_id=Order.find().sort({order_id:-1}).limit(1)+1;
         var order={order_id:order_id,prod_id:prod_id,price:price,amount:amount,reciet:reciet}
         const newOrder = new Order(order)
         console.log(newOrder)
          await newOrder.save()  
          console.log("order Created")
-        return newOrder
+        return order_id;
     }
     catch
     {   console.log("fail to create newOrder")
-        return null
+        return 0
     }
 }
 const GelAllOrderByUser = async (user_id) => {
@@ -42,4 +31,4 @@ const GelAllOrderByUser = async (user_id) => {
             return null
         }
 }
-module.exports = { GelAllOrderByUser, createOrder, getOrderId }
+module.exports = { GelAllOrderByUser, insertNewOrder }

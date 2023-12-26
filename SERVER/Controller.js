@@ -3,13 +3,14 @@ const express=require("express")
 const router= express.Router();
 const UserBLL=require("./models/UserBLL")
 const ProductBLL=require("./models/ProductBLL")
-const ShoppingHistBLL=require("./models/CertHistBLL")
-
+const certHistBLL=require("./models/CertHistBLL")
+const multer = require('multer'); // For handling file uploads
+const path = require('path');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const axios = require('axios')
 const mongoose = require('mongoose');
-
+const fs = require('fs');
 
 router.use((req, res, next) => {
     checkToken(req,res,next)
@@ -56,13 +57,7 @@ const checkToken = function (req, res, next)
      const persId = req.body.persId
      const phone = req.body.phone
      const AccessToken = jwt.sign({persId,phone}, process.env.ACCESS_TOKEN_SECRET, {expiresIn:"1h"}) 
-     
-     //localStorage.setItem(persId, AccessToken);  
-     //console.log(AccessToken)
-     //const at = localStorage.getItem(persId)
-     //console.log("from storage:"+at)
-     //const data = jwt.verify(AccessToken, process.env.ACCESS_TOKEN_SECRET);
-     //console.log("persId:"+data.persId+" phone:"+data.phone)
+    
      try {
         
         const new_user = await BLLMongo.checkUserExists({persId:persId,phone:phone})
@@ -119,7 +114,7 @@ jsonObj.Recipients.push(jsonSMSTO);
 
 return res.json(tempOTP)
 })
-router.post("/getProducts", async (req,res) => {
+router.get("/getProducts", async (req,res,next) => {
     try
     {
   // console.log("city:" + req.body.P_MUN_DEF)
@@ -134,15 +129,58 @@ router.post("/getProducts", async (req,res) => {
 })
 router.post("/createProduct", async (req,res) => {
     // console.log("city:" + req.body.P_MUN_DEF)
-     const list = await ProductBLL.GetProductByName(req.prodName)
-   
-    return res.json(list)//res.json({"success": true})//res.json(user)
+    var P_image1=req.body.picture1
+    var P_image2=req.body.picture2
+    var P_image3=req.body.picture3
+     // Read the file as a binary buffer
+      const fileBuffer1 = fs.readFileSync('Files/'+P_image1.FILE_NAME);
+      // Convert the binary buffer to a Base64 encoded string
+      const base64String1 = fileBuffer1.toString('base64');
+      const fileBuffer2 = fs.readFileSync('Files/'+P_image2.FILE_NAME); 
+      // Convert the binary buffer to a Base64 encoded string
+      const base64String2 = fileBuffer2.toString('base64');
+
+      const fileBuffer3 = fs.readFileSync('Files/'+P_image3.FILE_NAME);  
+      // Convert the binary buffer to a Base64 encoded string
+      const base64String3 = fileBuffer3.toString('base64');
+
+     const product = await ProductBLL.createProduct(req.body.prodName,req.body.price,req.body.description,
+        {data:base64String1,content:'image/'+P_image1.FILE_TYPE},{data:base64String2,content:'image/'+P_image2.FILE_TYPE},{data:base64String3,content:'image/'+P_image3.FILE_TYPE},req.body.stock)
+     fs.unlink('Files/'+P_image1.FILE_NAME)
+     fs.unlink('Files/'+P_image2.FILE_NAME)
+     fs.unlink('Files/'+P_image3.FILE_NAME)
+    return res.json(product)//res.json({"success": true})//res.json(user)
      
   })
-  router.post("/getProductByName", async (req,res) => {
+  router.post("/deleteProduct", async (req,res,next) => {
+   
+    var succeed=await ProductBLL.deleteProduct()
+    return res.json(succeed)
+})
+  router.post("/getProductByName", async (req,res,next) => {
     // console.log("city:" + req.body.P_MUN_DEF)
-     const list = await ProductBLL.GetProductByName(req.prodName)
+     const list = await ProductBLL.GetProductByName(req.body.prodName)
    
     return res.json(list)//res.json({"success": true})//res.json(user)
      
   })
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'Files/'); // Specify the directory where uploaded files will be stored
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.originalname); // Use the original filename
+    },
+  });
+  
+  const upload = multer({ storage });
+ // upload.single('file')
+  router.post('/upload', upload.single('file'), async(req, res) => {
+    // The uploaded file can be accessed as req.file
+    
+    if (!req.files) {
+        console.log('2')
+      return res.status(400).json({ message: 'No file uploaded' });
+     
+    }})

@@ -13,7 +13,7 @@ const Controller = require('./Controller');
  mongoose.connect(process.env.MONGO_DB).then(() => {
      console.log("Connected to MongoDB")
  })
-app.use('/', Controller);
+app.use('/api', Controller);
 app.listen(8000, () => {
     console.log('Server is running on port 8000');
   

@@ -1,11 +1,13 @@
 import React from 'react'
-
+import Card from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
+import CardMedia from '@mui/material/CardMedia';
 export default function Product(props) {
   let {product}=props;
 
   return (
     <div /*class="hh"*/> 
-    <RtlProvider>
+   
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
@@ -29,7 +31,7 @@ export default function Product(props) {
       </CardActions>
     </Card>
 
-    </RtlProvider>
+    
   {  /*  prod_name:{required:true,type:string},
 price:{required:true,type:string},
 description:{required:true,type:string},

@@ -9,6 +9,9 @@ import Button from '@mui/material/Button';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import Box from '@mui/material/Box';
+
+import { useState , useEffect} from 'react'
 
 export default function NewProduct() {
 
@@ -20,7 +23,7 @@ export default function NewProduct() {
     const [img3File, setImg3File] = useState({})
     const [img3FileName, setImg3FileName] = useState('')
     const [prodName, setProdName] = useState('')
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState('')
     const [desc, setDesc] = useState('')
     const [stock, setStock] = useState('')
     const url=import.meta.env.VITE_URL_BASE
@@ -132,15 +135,22 @@ export default function NewProduct() {
 
       }
   return (
-    <div>
+    <div className='hh' >
       
- 
+      <Box component="form"
+       sx={{
+        '& > :not(style)': { m: 1, width:'30%',maxWidth: '24ch' },
+      }}
+    >
    <TextField  inputProps={{ maxLength: 100}}   name='prodName'  required label="שם המוצר" variant="outlined" value={prodName}  onChange={handleChange} />
         <TextField  inputProps={{ maxLength: 100}}  required name='description'  label="תיאור המוצר" variant="outlined" value={desc} onChange={handleChange}  />
         <TextField name= 'stock' label="מלאי"  inputProps={{ maxLength: 6}}   value={stock} variant="outlined" onChange={handleChange}  />
         <TextField name= 'price' label=" מחיר מוצר"  inputProps={{ maxLength: 6}}  value={price} variant="outlined" onChange={handleChange}  />
+        </Box>
+        <br/>
+        <div style={{display:'block'}} >
         <div style={{display:'flex',width:'100%'}}>
-            <InputLabel style={{display:'flex',width:'50%'}}> תמונה1 של מוצר &nbsp; </InputLabel> 
+            <InputLabel > תמונה1 של מוצר &nbsp; </InputLabel> 
             <Button
                 size='small'               
                 variant="contained"
@@ -156,9 +166,9 @@ export default function NewProduct() {
                 
               </Button>
            {img1File&& <InputLabel>&nbsp;{img1File.name} </InputLabel> }</div><br/>
-   
+           
     <div style={{display:'flex',width:'100%'}}>
-    <InputLabel style={{display:'flex',width:'50%'}}> תמונה2 של מוצר &nbsp; </InputLabel> 
+    <InputLabel > תמונה2 של מוצר &nbsp; </InputLabel> 
     <Button
         size='small'               
         variant="contained"
@@ -175,7 +185,7 @@ export default function NewProduct() {
       </Button>
    {img2File&& <InputLabel>&nbsp;{img2File.name} </InputLabel> }</div><br/>
    <div style={{display:'flex',width:'100%'}}>
-    <InputLabel style={{display:'flex',width:'50%'}}> תמונה3 של מוצר &nbsp; </InputLabel> 
+    <InputLabel > תמונה3 של מוצר &nbsp; </InputLabel> 
     <Button
         size='small'               
         variant="contained"
@@ -189,9 +199,9 @@ export default function NewProduct() {
           onChange={handleimg3Upload}
         />
         
-      </Button>
-   {img2File&& <InputLabel>&nbsp;{img2File.name} </InputLabel> }</div><br/>
-        <Button variant="contained" onClick={save}>שמירה</Button>
+      </Button></div>
+   {img2File&& <InputLabel>&nbsp;{img3File.name} </InputLabel> }</div><br/>
+        <div style={{textAlign:'left'}} ><Button  variant="contained" onClick={save}>שמירה</Button></div>
 </div>
   );
 

@@ -1,4 +1,4 @@
-const User = require("./UserModal")
+const User = require("./UserModel")
 const createUser = async (user) => {
     try
     {

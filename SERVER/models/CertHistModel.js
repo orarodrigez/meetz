@@ -2,9 +2,9 @@ const mongoose=require("mongoose")
 
 const CertHistSchema=mongoose.Schema({
  
-    prod_id:{required:true,type:int},   
-    user_id:{required:true,type:int},
-    amount:{required:true,type:int},
+    prod_id:{required:true,type:Number},   
+    user_id:{required:true,type:Number},
+    amount:{required:true,type:Number},
 })
 const model= mongoose.model("certHist",CertHistSchema)
 model.exports=model;

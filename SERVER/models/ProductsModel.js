@@ -2,23 +2,23 @@ const mongoose=require("mongoose")
 
 const ProductSchema=mongoose.Schema({
  
-prodName:{required:true,type:string},
-price:{required:true,type:float64Array},
-description:{required:true,type:string},
+prodName:{required:true,type:String},
+price:{required:true,type:Number},
+description:{required:true,type:String},
 picture1:{required:true,type:{
-		data: buffer,
-		contentType: string}
+		data: Buffer,
+		contentType: String}
 },
 picture2:{required:true,type:{
-    data: buffer,
-    contentType: string}
+    data: Buffer,
+    contentType: String}
 },
 picture3:{required:true,type:{
-    data: buffer,
-    contentType: string}
+    data: Buffer,
+    contentType: String}
 },
-stock:{required:true,type:int},
-prodId:{required:true,type:int}
+stock:{required:true,type:Number},
+prodId:{required:true,type:Number}
 })
 
 

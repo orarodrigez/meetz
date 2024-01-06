@@ -114,7 +114,7 @@ jsonObj.Recipients.push(jsonSMSTO);
 
 return res.json(tempOTP)
 })
-router.get("/getProducts", async (req,res,next) => {
+router.get("/getProducts", async (req,res) => {
     try
     {
   // console.log("city:" + req.body.P_MUN_DEF)
@@ -184,3 +184,4 @@ router.post("/createProduct", async (req,res) => {
       return res.status(400).json({ message: 'No file uploaded' });
      
     }})
+    module.exports = router;

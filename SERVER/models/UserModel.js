@@ -3,6 +3,7 @@ const mongoose=require("mongoose")
 const UserSchema=mongoose.Schema({
 
     cell_no:{required:true,type:String},
+    password:{required:true,type:String},
     first_name:{required:true,type:String},
     last_name:{required:true,type:String},  
     address:{required:true,type:String},

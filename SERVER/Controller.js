@@ -19,7 +19,7 @@ const checkToken = function (req, res, next)
  {
     var data;
   //  console.log("url:"+req.originalUrl)
-    if(req.originalUrl =="/getProductByName" || req.originalUrl == "/getProducts")
+    if(req.originalUrl =="/api/getProductByName" || req.originalUrl == "/api/getProducts")
     {
         next()
     }

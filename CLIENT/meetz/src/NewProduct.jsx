@@ -10,10 +10,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Box from '@mui/material/Box';
+import { useNavigate } from "react-router-dom"
 
-import { useState , useEffect} from 'react'
+import { useState , useEffect,useRef} from 'react'
 
 export default function NewProduct() {
+  const navigate = useNavigate()
+  const windowWidth = useRef(window.innerWidth);
 
     const [file, setFile] = useState({})
     const [img1File, setImg1File] = useState({})
@@ -113,7 +116,7 @@ export default function NewProduct() {
       const save = async () => 
       {
         SaveFiles();
-        const prod = {prodName,price,desc,picture1,picture2,picture3,stock}
+        const prod = {prodName,price,desc,img1File,img2File,img3File,stock}
          
           const token = localStorage.getItem(persId)
           //sessionStorage.setItem("RishuyRequest",JSON.stringify(newReq))
@@ -122,7 +125,7 @@ export default function NewProduct() {
       }
       const handleChange = (e) => {
          
-        var value = e.target.value.trim().toLowerCase();
+        var value = e.target.value;
       
        if ( e.target.name=='prodName')
            setProdName(value)
@@ -134,22 +137,23 @@ export default function NewProduct() {
           setDesc(value)
 
       }
+      const widthP=windowWidth.current>500?windowWidth.current*2:windowWidth.current
   return (
-    <div className='hh' >
+    <div className='hh' style={{maxWidth:widthP*0.8,marginRight:widthP*0.1,marginLeft:widthP*0.1}} >
       
       <Box component="form"
        sx={{
-        '& > :not(style)': { m: 1, width:'30%',maxWidth: '24ch' },
+        '& > :not(style)': { m: 1,width:'100%',maxWidth: windowWidth.current*0.7},
       }}
     >
-   <TextField  inputProps={{ maxLength: 100}}   name='prodName'  required label="שם המוצר" variant="outlined" value={prodName}  onChange={handleChange} />
-        <TextField  inputProps={{ maxLength: 100}}  required name='description'  label="תיאור המוצר" variant="outlined" value={desc} onChange={handleChange}  />
-        <TextField name= 'stock' label="מלאי"  inputProps={{ maxLength: 6}}   value={stock} variant="outlined" onChange={handleChange}  />
-        <TextField name= 'price' label=" מחיר מוצר"  inputProps={{ maxLength: 6}}  value={price} variant="outlined" onChange={handleChange}  />
+   <TextField  inputProps={{ maxLength: 100}}  style={{maxWidth:widthP*0.2}} name='prodName'  required label="שם המוצר" variant="outlined" value={prodName}  onChange={handleChange} />
+        <TextField  inputProps={{ maxLength: 100}}  style={{maxWidth:widthP*0.2}}   required name='description'  label="תיאור המוצר" variant="outlined" value={desc} onChange={handleChange}  />
+        <TextField name= 'stock' label="מלאי"  inputProps={{ maxLength: 6}}  style={{maxWidth:widthP*0.2}}  value={stock} variant="outlined" onChange={handleChange}  />
+        <TextField name= 'price' label=" מחיר מוצר"  inputProps={{ maxLength: 6}} style={{maxWidth:widthP*0.2}}  value={price} variant="outlined" onChange={handleChange}  />
         </Box>
         <br/>
-        <div style={{display:'block'}} >
-        <div style={{display:'flex',width:'100%'}}>
+        <div  >
+        <div style={{display:'flex',width:'100%',maxWidth: windowWidth.current*0.7 }}>
             <InputLabel > תמונה1 של מוצר &nbsp; </InputLabel> 
             <Button
                 size='small'               
@@ -199,8 +203,8 @@ export default function NewProduct() {
           onChange={handleimg3Upload}
         />
         
-      </Button></div>
-   {img2File&& <InputLabel>&nbsp;{img3File.name} </InputLabel> }</div><br/>
+      </Button>
+   {img2File&& <InputLabel>&nbsp;{img3File.name} </InputLabel> }</div></div><br/>
         <div style={{textAlign:'left'}} ><Button  variant="contained" onClick={save}>שמירה</Button></div>
 </div>
   );

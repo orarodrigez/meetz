@@ -18,13 +18,27 @@ const createUser = async (user) => {
 
 const checkUserExists = async (user) => {
    
-  const newuser= await User.findOne({persId:user.persId,phone:user.phone})
+  const newuser= await User.findOne({email:user.email,password:password})
   if (newuser)
    return newuser
   else
    return null
 }
-
+const newPassword = async (user) => {
+   
+    const newuser= await User.findOne({email:user.email})
+    if (newuser)
+    User.Update({email:user.email,password:user.password},{
+        $set: {
+          amount: amount+1
+        },
+        $currentDate: { lastUpdated: true }
+      })
+   
+    else
+     return null
+  }
+  
 
 const deleteUser = async (id) => {
    
@@ -34,4 +48,4 @@ const deleteUser = async (id) => {
 }
 
 
-module.exports = { checkUserExists, createUser, deleteUser }
+module.exports = { checkUserExists, createUser, deleteUser ,newPassword}

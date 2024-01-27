@@ -18,8 +18,9 @@ router.use((req, res, next) => {
 const checkToken = function (req, res, next)
  {
     var data;
-  //  console.log("url:"+req.originalUrl)
-    if(req.originalUrl =="/api/getProductByName" || req.originalUrl == "/api/getProducts")
+
+    console.log("url:"+req.originalUrl)
+    if(req.originalUrl =="/api/getProductByName" || req.originalUrl == "/api/getProducts"||req.originalUrl=="/api/checkUserEmail"||req.originalUrl=="/api/createUser")
     {
         next()
     }
@@ -80,39 +81,86 @@ const checkToken = function (req, res, next)
      return res.json(AccessToken)
     
 })
-router.post("/creareOTP",async(req,res)=>
+router.post("/createUser",async(req,res)=>
 {
     
-    //todo: create random kod
-   const tempOTP = Math.floor(Math.random() * 90000) + 10000;
-   //call -  "https://restapi.soprano.co.il/api/sms"
-    //save to mongo - persId, otpCode, exp , phone
-    console.log(tempOTP)
+   
+    //save to mongo - user
+   
     try {      
-        const user= await BLLMongo.createUser({persId:req.body.persId,phone:req.body.phone,otp:tempOTP})
+        const user= await UserBLL.createUser({cell_no:req.body.cell_no,
+          email:req.body.email,
+          password:req.body.password,
+          first_name:req.body.first_name,
+          last_name:req.body.last_name,  
+          city:req.body.city,
+          street:req.body.street,
+          house_no:req.body.house_no,
+          enter_no:req.body.enter_no,
+          building:req.body.building,
+          zip_id:req.body.zip_id,
+          pob:req.body.pob})
         if (JSON.stringify(user) === '{}')  
+        {
          console.log("user is not done")       
+         return res.status(500).json({success: false, msg: 'fail to create user' })
+        }
         else
-          console.log("user is done") 
+          return res.json(user)
     }
     catch(e) {
         return res.status(500).json({success: false, msg: e.message })
+    } 
+
+})
+
+
+router.post("/checkUser",async(req,res)=>
+{
+  try {
+        
+    const user = await UserBLL.checkUserExists({email:req.body.email,password:req.body.password})
+    console.log(user)
+    if (user)
+    {
+        console.log(new_user._id)
+        console.log("succeed to auth user")
+        return res.json(user)
     }
-  
-    //return ok to client - client open textbox
-var jsonObj = {};
-jsonObj.UserName = process.env.SMS_OTP_URL_USER//"mtroquik2"; //process.OtpUserName;
-jsonObj.Password = process.env.SMS_OTP_URL_PASS//"mtroquik2r4"; //process.OtpPassword
-jsonObj.SenderName = process.env.SMS_OTP_URL_SENDERID//"MetroOTPReg";
-jsonObj.BodyMessage = "הקוד זמין למשך 5 דקות - " + tempOTP;
-jsonObj.Recipients = [];
-var jsonSMSTO = {};
-jsonSMSTO.Cellphone = req.body.phone;
-jsonObj.Recipients.push(jsonSMSTO); 
+    else
+ {
+        console.log("fail to find user")
+        return res.status(500).json({success: false, msg: "fail to find user" } )
+   }
+ 
+}
 
-//await axios.post(process.env.SMS_OTP_URL, jsonObj)
-
-return res.json(tempOTP)
+catch(e) {
+    return res.status(500).json({success: false, msg: e.message })
+}
+})
+router.post("/checkUserEmail",async(req,res)=>
+{
+  try {
+    console.log(req.body.email)
+    const user = await UserBLL.checkUserEmailExist(req.body.email)
+    console.log(user)
+    if (user)
+    {
+        console.log(new_user._id)
+        console.log("succeed to auth user")
+        return res.json(user)
+    }
+    else
+ {
+        console.log("fail to find user")
+        return res.status(500).json({success: false, msg: "fail to find user" } )
+   }
+ 
+}
+catch(e) {
+  return res.status(500).json({success: false, msg: e.message })
+}
 })
 router.get("/getProducts", async (req,res) => {
     try

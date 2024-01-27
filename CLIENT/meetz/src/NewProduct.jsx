@@ -137,26 +137,25 @@ export default function NewProduct() {
           setDesc(value)
 
       }
-      const widthP=windowWidth.current>500?windowWidth.current*2:windowWidth.current
+      const widthP=windowWidth.current>500?windowWidth.current/2:windowWidth.current
   return (
-    <div className='hh' style={{maxWidth:widthP*0.8,marginRight:widthP*0.1,marginLeft:widthP*0.1}} >
+    <div className='product' style={{width:widthP*0.6,marginTop:'150px',marginBottom:'30px'}} >
       
       <Box component="form"
        sx={{
-        '& > :not(style)': { m: 1,width:'100%',maxWidth: windowWidth.current*0.7},
+        '& > :not(style)': {width:'100%'},
       }}
     >
-   <TextField  inputProps={{ maxLength: 100}}  style={{maxWidth:widthP*0.2}} name='prodName'  required label="שם המוצר" variant="outlined" value={prodName}  onChange={handleChange} />
-        <TextField  inputProps={{ maxLength: 100}}  style={{maxWidth:widthP*0.2}}   required name='description'  label="תיאור המוצר" variant="outlined" value={desc} onChange={handleChange}  />
-        <TextField name= 'stock' label="מלאי"  inputProps={{ maxLength: 6}}  style={{maxWidth:widthP*0.2}}  value={stock} variant="outlined" onChange={handleChange}  />
-        <TextField name= 'price' label=" מחיר מוצר"  inputProps={{ maxLength: 6}} style={{maxWidth:widthP*0.2}}  value={price} variant="outlined" onChange={handleChange}  />
+   <TextField  inputProps={{maxLength: 100}}  style={{maxWidth:widthP*0.5}}   name='prodName'  required label="שם המוצר" variant="outlined" value={prodName}  onChange={handleChange} />          <br/>     <br/>
+      <TextField  inputProps={{ maxLength: 100}}  style={{maxWidth:widthP*0.5,fontSize:'16px'}}   required name='description'  label="תיאור המוצר" variant="outlined" value={desc} onChange={handleChange}  />     <br/>     <br/>
+        <TextField name= 'stock' label="מלאי"  inputProps={{ maxLength: 6}}  style={{maxWidth:widthP*0.5,fontSize:'16px'}}   value={stock} variant="outlined" onChange={handleChange}  />     <br/>     <br/>
+        <TextField name= 'price' label=" מחיר מוצר"  inputProps={{ maxLength: 6}}  style={{maxWidth:widthP*0.5,fontSize:'16px'}}  value={price} variant="outlined" onChange={handleChange}  />     <br/>     <br/>
         </Box>
         <br/>
         <div  >
-        <div style={{display:'flex',width:'100%',maxWidth: windowWidth.current*0.7 }}>
-            <InputLabel > תמונה1 של מוצר &nbsp; </InputLabel> 
+        <div style={{display:'flex',width:'100%' }}>
+            <InputLabel   style={{fontSize:'100%' }}> תמונה1 של מוצר &nbsp; </InputLabel> 
             <Button
-                size='small'               
                 variant="contained"
                 component="label"
               >
@@ -169,29 +168,26 @@ export default function NewProduct() {
                 />
                 
               </Button>
-           {img1File&& <InputLabel>&nbsp;{img1File.name} </InputLabel> }</div><br/>
+           {img1File&& <InputLabel   style={{fontSize:'100%' }}>&nbsp;{img1File.name} </InputLabel> }</div><br/>
            
     <div style={{display:'flex',width:'100%'}}>
-    <InputLabel > תמונה2 של מוצר &nbsp; </InputLabel> 
+    <InputLabel   style={{fontSize:'100%' }}> תמונה2 של מוצר &nbsp; </InputLabel> 
     <Button
-        size='small'               
         variant="contained"
         component="label"
       >
        בחר קובץ
         <input
-         
           type="file"
           hidden
           onChange={handleimg2Upload}
         />
         
       </Button>
-   {img2File&& <InputLabel>&nbsp;{img2File.name} </InputLabel> }</div><br/>
+   {img2File&& <InputLabel   style={{fontSize:'100%' }}>&nbsp;{img2File.name} </InputLabel> }</div><br/>
    <div style={{display:'flex',width:'100%'}}>
-    <InputLabel > תמונה3 של מוצר &nbsp; </InputLabel> 
+    <InputLabel   style={{fontSize:'100%' }}> תמונה3 של מוצר &nbsp; </InputLabel> 
     <Button
-        size='small'               
         variant="contained"
         component="label"
       >
@@ -205,7 +201,7 @@ export default function NewProduct() {
         
       </Button>
    {img2File&& <InputLabel>&nbsp;{img3File.name} </InputLabel> }</div></div><br/>
-        <div style={{textAlign:'left'}} ><Button  variant="contained" onClick={save}>שמירה</Button></div>
+        <div style={{textAlign:'center'}} ><Button  style={{fontSize:'20px' }} size='medium'  variant="contained" onClick={save}>שמירה</Button></div>
 </div>
   );
 

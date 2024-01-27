@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState,useEffect,useRef } from 'react'
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -42,7 +44,7 @@ export default function NewPass(props) {
   };
   return (
     
-         <div className='hh'> 
+         <div className='hh' style={{maxWidth:widthP*0.6,marginRight:widthP*0.2,marginLeft:widthP*0.2}}> 
           
           <Avatar sx={{ m: 1,bgcolor: 'secondary.main' }} style={{margin:'auto'}}>
 

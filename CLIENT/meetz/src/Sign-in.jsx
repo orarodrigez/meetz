@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCookies } from 'react-cookie';
 import { useState , useEffect,useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
+import RtlProvider from './RtlProvider';
 
 
 
@@ -29,24 +30,31 @@ export default function SignInSide(props) {
     setCookie('email', email, { path: '/' });
     setCookie('Password', pwd, { path: '/' });
  };
+
+
  const navigate = useNavigate()
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  async function handleSubmit () {
+  
+
+    const user = await  axios.post(url+'/checkUser/',{email:email, password:pwd}) 
+    if (user!=null) 
+    sessionStorage.setItem("User",JSON.stringify({'firstName': user.firstName, 'lastName':user.lastName,  'cell_no':user.cell_no, 'email':user.email, 
+    'city':user.city,    'street':user.street,    'house_no':user.house_no,    'enter_no':user.enter_no,    'building':user.building,    'zip_id':user.zip_id,    'pob':user.pob}))
+
+   
   };
-  const NewUser = () => navigate('/SignUp')
+  const NewUser = () => {
+    props.callback(1);
+
+  }
   const windowWidth = useRef(window.innerWidth);
-  const widthP=windowWidth.current>500?windowWidth.current*2:windowWidth.current
+  const widthP=windowWidth.current>1100?windowWidth.current/4:windowWidth.current
 
 
   return (
-    
-         <div className='hh' style={{maxWidth:widthP*0.6,marginRight:widthP*0.2,marginLeft:widthP*0.2}}> 
+    <RtlProvider>
+         <div className='user' style={{width:widthP*0.6}}> 
           
           <Avatar sx={{ m: 1,bgcolor: 'secondary.main' }} style={{margin:'auto'}}>
 
@@ -56,7 +64,7 @@ export default function SignInSide(props) {
               
 
               
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ '& > :not(style)': {m: 1}}} >
+           
               <TextField
                 margin="normal"
                 required
@@ -65,11 +73,12 @@ export default function SignInSide(props) {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                value={email}
-
+                 onChange={(e)=>setEmail(email)}
+                 style ={{width:'80%'}}
               />
               <br/>
               <TextField
+               style ={{width:'80%',fontSize:'20px'}}
                 margin="normal"
                 required
                 name="password"
@@ -77,7 +86,9 @@ export default function SignInSide(props) {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={pwd}
+                onChange={(e)=>setPwd(pwd)}
+                
+
               /><br/>
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary"  />}
@@ -85,10 +96,12 @@ export default function SignInSide(props) {
                 onClick={handle}
               /><br/>
               <Button
-                type="submit"
-                
+                sx={{  mt: 3, mb: 2 }}
+                onClick={handleSubmit}
                 variant="contained"
-                
+               
+                size='large'
+                style={{fontSize:'20px'}}
               >
               
                 התחבר
@@ -98,7 +111,7 @@ export default function SignInSide(props) {
              
                
               
-            </Box>
+            
             <Link href="#" >
                     שכחת סיסמא?
                   </Link><br/><br/>
@@ -106,6 +119,7 @@ export default function SignInSide(props) {
                     אין לך חשבון? פתח חשבון
                   </Link>
           </div>
+          </RtlProvider>
    
   );
 }

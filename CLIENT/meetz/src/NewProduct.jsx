@@ -76,7 +76,7 @@ export default function NewProduct() {
 
         const obj = JSON.parse(sessionStorage.getItem("user"));
        
-          const token = localStorage.getItem(obj.persId)
+          const token = localStorage.getItem(obj.email)
       
         const formData = new FormData();
         if  (img1File!=null)   
@@ -118,7 +118,7 @@ export default function NewProduct() {
         SaveFiles();
         const prod = {prodName,price,desc,img1File,img2File,img3File,stock}
          
-          const token = localStorage.getItem(persId)
+          const token = localStorage.getItem(email)
           //sessionStorage.setItem("RishuyRequest",JSON.stringify(newReq))
           const resp = await  axios.post(url+'/createProduct/',prod,{headers:{'authorization':token}})
     

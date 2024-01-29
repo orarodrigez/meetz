@@ -1,18 +1,14 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
+;
 import axios from 'axios'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import { FormHelperText } from '@mui/material';
 
 import { useState , useEffect,useRef} from 'react'
@@ -55,6 +51,7 @@ export default function SignUp(props) {
   const phonereg =/^(?:(?:(\+?972|\(\+?972\)|\+?\(972\))(?:\s|\.|-)?([1-9]\d?))|(0[23489]{1})|(0[57]{1}[0-9]))(?:\s|\.|-)?([^0\D]{1}\d{2}(?:\s|\.|-)?\d{4})$/
   //const name=/^[A-Za-z\u0590-\u05fe][A-Za-z\u0590-\u05fe0-9_ ][A-Za-z\u0590-\u05fe0-9- ][A-Za-z\u0590-\u05fe0-9- "_]+$/i
   const name=/^[A-Za-z\u0590-\u05fe0-9_ -]+$/i
+  const pass= /^(?=.*\d)(?=.*\D)(?=.*[a-z]).{5,10}$/; 
   const [valid, setValid] = useState(true)
   const [userExist, setUserExist] = useState(false)
   const [userCreated, setUserCreated] = useState(false)
@@ -63,18 +60,27 @@ export default function SignUp(props) {
   const number=/^[0-9\b]+$/
 
   async function createUser ()  {
-  
+    setUserExist(false);
     if (!check())
       return;
       let user;
       user = await  axios.post(url+'/checkUserEmail',{email})     
-       console.log(user.data)
-        if (user.data!=null)
-          {
+    console.log(user.data)
+        if (user?.data!=null)
+          {   
             setUserExist(true);
             return;
           }
- 
+          /*console.log('cell_no='+cell_no+' email='+email+
+          '  password='+password+'   first_name='+first_name+
+          '  last_name='+last_name+  
+          ' city='+city+
+          '  street='+street+
+          '  house_no='+house_no+
+          '  enter_no='+enter_no+
+          ' building='+building+
+          ' zip_id='+zip_id+
+          '  pob='+pob)*/
      user = await  axios.post(url+'/createUser',{cell_no:cell_no,
       email:email,
       password:password,
@@ -87,11 +93,13 @@ export default function SignUp(props) {
       building:building,
       zip_id:zip_id,
       pob:pob}) 
+      console.log(user)
       if (user!=null) 
       sessionStorage.setItem("User",JSON.stringify({'firstName': user.firstName, 'lastName':user.lastName,  'cell_no':user.cell_no, 'email':user.email, 
       'city':user.city,    'street':user.street,    'house_no':user.house_no,    'enter_no':user.enter_no,    'building':user.building,    'zip_id':user.zip_id,    'pob':user.pob}))
       if (user.data!=null)
       {
+        
         setUserCreated(true)
         sessionStorage.setItem("User",JSON.stringify({'firstName': user.firstName, 'lastName':user.lastName,  'cell_no':user.cell_no, 'email':user.email, 
         'city':user.city,    'street':user.street,    'house_no':user.house_no,    'enter_no':user.enter_no,    'building':user.building,    'zip_id':user.zip_id,    'pob':user.pob}))
@@ -158,7 +166,7 @@ export default function SignUp(props) {
         setEmail(e.target.value)
       }
       if (e.target.name=='password')
-       { if((!e.target.value))
+       { if(!pass.test(e.target.value)||!e.target.value)
           { 
             setPasswordMessage('יש למלא סיסמא תקינה ')
             valid=false;
@@ -254,6 +262,17 @@ function check()
   setPobMessage('')
  
   var valid=true
+  
+if (!emailreg.test(email))
+{ 
+  setEmailMessage('יש למלא דוא"ל תקין')
+  valid=false;
+}
+if (!pass.test(password)) 
+{
+      setPasswordMessage('יש למלא סיסמא תקינה')
+      valid=false;
+    }
   if (!name.test(first_name)) 
 {
       setFirst_nameMessage('יש למלא שם תקין')
@@ -279,12 +298,6 @@ if (!phonereg.test(cell_no))
     }
 
 
-if (!emailreg.test(email))
-    { 
-      setEmailMessage('יש למלא דוא"ל תקין')
-      valid=false;
-    }
-  
     if (street!=''&&!name.test(street)) 
     {         
         setStreetMessage('יש למלא רחוב תקין')
@@ -503,14 +516,12 @@ return valid;
             >
               צור חשבון
             </Button>
-            {userCreated&&<FormHelperText style={{color:"blue",display:'flex',justifyContent:'center'}}>משתמש הוקם במערכת</FormHelperText>}
+            {userCreated&&!userExist&&<FormHelperText style={{color:"blue",display:'flex',justifyContent:'center'}}>משתמש הוקם במערכת</FormHelperText>}
 
            
           
           <br/>
-                <Link href="#"  onClick={OldUser}>
-                  קיים כבר חשבון? התחבר
-                </Link>
+          
            
         </div>
         </RtlProvider>

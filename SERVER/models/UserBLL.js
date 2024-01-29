@@ -1,4 +1,5 @@
 const User = require("./UserModel")
+
 const createUser = async (   {cell_no:cell_no,
   email:email,
   password:password,
@@ -12,9 +13,14 @@ const createUser = async (   {cell_no:cell_no,
   zip_id:zip_id,
   pob:pob}  ) => {
     try
-    {
-      var user_id=User.find().sort({user_id:-1}).limit(1)
-        console.log(user)
+    { 
+      var user=User.find().sort("user_id").limit(1)
+      var user_id
+    if(user.data==null)
+       user_id=1
+    else
+       user_id=user.data+1
+  
         const newUser = new User( {cell_no:cell_no,
           email:email,
           password:password,
@@ -27,14 +33,16 @@ const createUser = async (   {cell_no:cell_no,
           building:building,
           zip_id:zip_id,
           pob:pob,
-          user_id:user_id} )
+          user_id:user_id,
+          role:0
+        } )
         console.log(newUser)
          await newUser.save()  
          console.log("Created")
         return newUser
     }
-    catch
-    {   console.log("fail to create")
+    catch(e)
+    {   console.log("fail to create"+e)
         return null
     }
 }
@@ -42,14 +50,14 @@ const createUser = async (   {cell_no:cell_no,
 
 const checkUserExists = async (user) => {
    
-  const newuser= await User.findOne({email:user.email,password:password})
+  const newuser= await User.findOne({email:user.email,password:user.password})
   if (newuser)
    return newuser
   else
    return null
 }
 const checkUserEmailExist = async (email) => {
-   console("email")
+   console.log("email")
   const newuser= await User.findOne({email:email})
   if (newuser)
    return newuser

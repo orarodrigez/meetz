@@ -20,26 +20,14 @@ const checkToken = function (req, res, next)
     var data;
 
     console.log("url:"+req.originalUrl)
-    if(req.originalUrl =="/api/getProductByName" || req.originalUrl == "/api/getProducts"||req.originalUrl=="/api/checkUserEmail"||req.originalUrl=="/api/createUser")
+    if(req.originalUrl =="/api/createProduct" || req.originalUrl == "/api/deleteProduct"||req.originalUrl=="/api/upload")
     {
-        next()
-    }
-    else
-    {  
+ 
         try{
             //console.log("1")
            // console.log(req.headers.authorization)
-            data = jwt.verify(req.headers.authorization, process.env.ACCESS_TOKEN_SECRET);
-           // console.log("2")
-        }
-        catch (e)
-        {
-           // console.log("3")
-           // console.log(JSON.stringify(e))
-            return res.json("Unauthorized")
-        }
-    
-    if(data.persId != "0" && data.exp * 1000 > Date.now())
+            data = jwt.verify(req.headers.authorization, process.env.ACCESS_TOKEN_SECRET); 
+            if(data.email != "" && data.exp * 1000 > Date.now())
         {
            
             next()
@@ -49,6 +37,20 @@ const checkToken = function (req, res, next)
             
             return
         }
+           // console.log("2")
+        }
+        catch (e)
+        {
+           // console.log("3")
+           // console.log(JSON.stringify(e))
+            return res.json("Unauthorized")
+        }
+      }
+      else
+      {  
+        next()
+      
+   
     }
  }
  router.post("/checkOtp", async(req,res)=>
@@ -86,7 +88,18 @@ router.post("/createUser",async(req,res)=>
     
    
     //save to mongo - user
-   
+    console.log('cell_no='+req.body.cell_no+
+    ' email='+req.body.email+
+    '  password='+req.body.password+
+    '   first_name='+req.body.first_name+
+    '  last_name='+req.body.last_name+
+    ' city='+req.body.city+
+    '  street='+req.body.street+
+    '  house_no='+req.body.house_no+
+    '  enter_no='+req.body.enter_no+
+    ' building='+req.body.building+
+    ' zip_id='+req.body.zip_id+
+    '  pob='+req.body.pob)
     try {      
         const user= await UserBLL.createUser({cell_no:req.body.cell_no,
           email:req.body.email,
@@ -100,6 +113,7 @@ router.post("/createUser",async(req,res)=>
           building:req.body.building,
           zip_id:req.body.zip_id,
           pob:req.body.pob})
+          console.log(user)       
         if (JSON.stringify(user) === '{}')  
         {
          console.log("user is not done")       
@@ -118,19 +132,19 @@ router.post("/createUser",async(req,res)=>
 router.post("/checkUser",async(req,res)=>
 {
   try {
-        
+        console.log(req.body)
     const user = await UserBLL.checkUserExists({email:req.body.email,password:req.body.password})
     console.log(user)
     if (user)
     {
-        console.log(new_user._id)
+        console.log(user._id)
         console.log("succeed to auth user")
         return res.json(user)
     }
     else
  {
         console.log("fail to find user")
-        return res.status(500).json({success: false, msg: "fail to find user" } )
+        return res.json(null)
    }
  
 }
@@ -147,14 +161,14 @@ router.post("/checkUserEmail",async(req,res)=>
     console.log(user)
     if (user)
     {
-        console.log(new_user._id)
+        console.log(user._id)
         console.log("succeed to auth user")
         return res.json(user)
     }
     else
  {
         console.log("fail to find user")
-        return res.status(500).json({success: false, msg: "fail to find user" } )
+        return res.json(null)
    }
  
 }

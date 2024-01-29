@@ -1,4 +1,4 @@
-const mongoose=require("mongoose")
+const mongoose=require("mongoose");
 
 const CertHistSchema=mongoose.Schema({
  
@@ -6,5 +6,6 @@ const CertHistSchema=mongoose.Schema({
     user_id:{required:true,type:Number},
     amount:{required:true,type:Number},
 })
+
 const model= mongoose.model("certHist",CertHistSchema)
-model.exports=model;
+module.exports=model;

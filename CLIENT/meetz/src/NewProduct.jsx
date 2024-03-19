@@ -12,13 +12,16 @@ import FormLabel from '@mui/material/FormLabel';
 import Box from '@mui/material/Box';
 import { useNavigate } from "react-router-dom"
 
+import axios from 'axios'
+
 import { useState , useEffect,useRef} from 'react'
 
 export default function NewProduct() {
   const navigate = useNavigate()
   const windowWidth = useRef(window.innerWidth);
+  const[timeStamp, setTimeStamp] = useState(Date.now())
 
-    const [file, setFile] = useState({})
+    const [fileLoad, setFileLoad] = useState(false)
     const [img1File, setImg1File] = useState({})
     const [img1FileName, setImg1FileName] = useState('')
     const [img2File, setImg2File] = useState({})
@@ -74,18 +77,31 @@ export default function NewProduct() {
       const SaveFiles = async () =>
       {
 
-        const obj = JSON.parse(sessionStorage.getItem("user"));
-       
-          const token = localStorage.getItem(obj.email)
+        const obj = JSON.parse(sessionStorage.getItem("User"));
       
+          const token = localStorage.getItem(obj.email)
+
         const formData = new FormData();
-        if  (img1File!=null)   
-            formData.append('file', img1File.file, img1FileName);
-        if  (img2File!=null)   
-           formData.append('file', img2File.file, img2FileName); 
-        if  (img3File!=null)   
-            formData.append('file', img3File.file, img3FileName);
-        
+      
+        if  (img1File.name!=null)   
+        {
+          const semiTransparentRedPng = await sharp({
+            create: {
+              width: 48,
+              height: 48,
+              channels: 4,
+              background: { r: 255, g: 0, b: 0, alpha: 0.5 }
+            }
+          })
+            .png()
+            .toBuffer();
+            formData.append('file', img1File, img1FileName);
+        }
+        if  (img2File.name!=null)   
+           formData.append('file', img2File, img2FileName); 
+        if  (img3File.name!=null)   
+            formData.append('file', img3File, img3FileName);
+           
       if (formData.values().length==0)
        return;
           try {
@@ -98,7 +114,7 @@ export default function NewProduct() {
             if(res.status == 200)
               {
                 alert("הקבצים הועלו בהצלחה")
-                setFileLoad(fileLoad=>true)
+                setFileLoad(true)
                
               }
             else{
@@ -115,13 +131,19 @@ export default function NewProduct() {
 
       const save = async () => 
       {
-        SaveFiles();
-        const prod = {prodName,price,desc,img1File,img2File,img3File,stock}
+        await SaveFiles();
+        if (!fileLoad)
+          return;
+         console.log('start save: ')
+        const prod = {prodName:prodName,price:price,description:desc,img1FileName:img1FileName,img2FileName:img2FileName,img3FileName:img3FileName,stock:stock}
          
-          const token = localStorage.getItem(email)
+        const obj = JSON.parse(sessionStorage.getItem("User"));
+       
+        const token = localStorage.getItem(obj.email)
+    
           //sessionStorage.setItem("RishuyRequest",JSON.stringify(newReq))
           const resp = await  axios.post(url+'/createProduct/',prod,{headers:{'authorization':token}})
-    
+          console.log('end save: '+resp)
       }
       const handleChange = (e) => {
          

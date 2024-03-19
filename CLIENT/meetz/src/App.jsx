@@ -6,96 +6,100 @@ import NewProduct from './NewProduct'
 import RtlProvider from './RtlProvider'
 import SignInSide from './Sign-in'
 import axios from 'axios';
-import SignUp from './sign-up'
+import SignUp from './Sign-up'
 import { Routes, Route } from 'react-router-dom'
 import Toolbar from '@mui/material/Toolbar';
 import Bar from './Bar';
 import logoImg from './images/logo.png';
 import NewPass from './NewPass'
-import { useCookies } from 'react-cookie';
+import Cookies from "js-cookie";
 import MainLayout from './MainLayout'
 import Popover from '@mui/material/Popover';
-
-
+import ShowUser from './ShowUser'
+import ShowCert from './ShortCart'
 
 
 
 function App() {
   const windowWidth = useRef(window.innerWidth);
-  const [cookies, setCookie] = useCookies(['user']);
-  const [email, setEmail] = useState('');
-  const [pwd, setPwd] = useState('');
+
   const [newUser, setNewUser] = useState(false);
-  const [oldUser, setOldUser] = useState(false);
+  const [oldUser, setOldUser] = useState(null);
   const [newProduct, setNewProduct] = useState(true);
   const url=import.meta.env.VITE_URL_BASE
   const[productList, setProductList] = useState([])
-
+  const [showUser, setShowUser] = useState(null);
+  const [showCert, setShowCert] = useState(null);
  
 
   async function initillize()
-  {
+  {    
     getProductsList();
-    setEmail(cookies.email);
-    setPwd(cookies.pwd);
-    const user = await  axios.post(url+'/checkUser/',{email:email, password:pwd}) 
-    if (user!=null) 
-    sessionStorage.setItem("User",JSON.stringify({'firstName': user.firstName, 'lastName':user.lastName,  'cell_no':user.cell_no, 'email':user.email, 
-    'city':user.city,    'street':user.street,    'house_no':user.house_no,    'enter_no':user.enter_no,    'building':user.building,    'zip_id':user.zip_id,    'pob':user.pob}))
-
+   
+    const user = await  axios.post(url+'/checkUser/',{email:Cookies.get("email"), password:Cookies.get("password")})   
+    
+   
+      if (user.data!=null) 
+      {
+      setOldUser(user.data)
+        sessionStorage.setItem("User",JSON.stringify({'first_name': user.data.first_name, 'last_name':user.data.last_name,  'cell_no':user.data.cell_no, 'email':user.data.email, 
+        'city':user.data.city,    'street':user.data.street,    'house_no':user.data.house_no,    'enter_no':user.data.enter_no,    'building':user.data.building,    'zip_id':user.data.zip_id,    'pob':user.data.pob}))
+          try
+          {
+            
+              const token = await  axios.post(url+'/checkOtp/',{email:Cookies.get("email"),password:Cookies.get("password")})   
+              localStorage.setItem(Cookies.get("email"),token.data);
+             
+          }
+          catch(e)
+          {
+              console.log(e)
+          }
+    }
+    else
+      setOldUser('')
   }
   const getProductsList = async () => {
-    //const resp = await  axios.get(url+'/getProducts/')
-    //console.log(resp)
-    //setProductList(resp.data.ProductList)
+    const resp = await  axios.get(url+'/getProducts/')
+ 
+    setProductList(resp.data)
   }
   useEffect(() => {
     initillize()
   },[])
 
-const  SignIn= (value) => {
-  console.log(value)
-  if (value==1)
-  {
-    setNewUser(true)
-    setOldUser(false)
-    setNewProduct(false)
-
-  }
-  else if (value==2)
-  {
-    setNewUser(false)
-    setOldUser(true)
-    setNewProduct(false)
-  }
-  else
-  {
-    setNewUser(false)
-    setOldUser(false)
+const  callBack= (value) => {
+  setShowUser(false)
+  setNewProduct(false)
+  setNewUser(false)
+setShowCert(false)
+  if (value=='1')  
+    setNewUser(true)  
+  else if (value=='2')
     setNewProduct(true)
-  }
-  console.log(newUser)
-  console.log(oldUser)
+  else if(value=='4')
+    setShowUser(true)
+    else if(value=='5')
+    setShowCert(true)
 }
 
   return (
     <>
     
-     <Bar  callback={SignIn}/>
+    { oldUser!=null&&<Bar user={oldUser} callback={callBack}/>}
     <RtlProvider>
     <div  style={{ minHeight: '60vh',  display: 'flex', justifyContent: 'center',alignItems:'center',textAlign:'center'}}>
-
-     {/*<ProductList products={productList}/>
-     <NewProduct/>*/}
+    {productList&& <ProductList products={productList}/>}
+     {/*<NewProduct/>*/}
       
       {newProduct&&<MainLayout  children={<NewProduct />}/>}
-     {!newUser&&oldUser&&<MainLayout  children={<SignInSide callback={SignIn}/>}/>}
-     {!oldUser&&newUser&&<MainLayout children={<SignUp callback={SignIn}/>}/>}
-    
-     <Routes >
-     {/*<Route path={'/'} element={<ProductList />}/>  */}
+     {newUser&&<MainLayout children={<SignUp callback={callBack}/>}/>}
+     {showUser&&<MainLayout  children={<ShowUser/>}/>}
+     {showCert&&<MainLayout  children={<ShowCert/>}/>}
+     {/*<Routes >
+     {<Route path={'/'} element={<ProductList />}/>  }
      <Route path={'/NewPass'} element={<NewPass />} />   
-    </Routes>
+    </Routes>*/}
     <br/><br/>
     </div>
 <footer >

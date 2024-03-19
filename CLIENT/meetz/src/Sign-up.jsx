@@ -94,16 +94,13 @@ export default function SignUp(props) {
       zip_id:zip_id,
       pob:pob}) 
       console.log(user)
-      if (user!=null) 
-      sessionStorage.setItem("User",JSON.stringify({'firstName': user.firstName, 'lastName':user.lastName,  'cell_no':user.cell_no, 'email':user.email, 
-      'city':user.city,    'street':user.street,    'house_no':user.house_no,    'enter_no':user.enter_no,    'building':user.building,    'zip_id':user.zip_id,    'pob':user.pob}))
-      if (user.data!=null)
+        if (user.data!=null)
       {
         
         setUserCreated(true)
-        sessionStorage.setItem("User",JSON.stringify({'firstName': user.firstName, 'lastName':user.lastName,  'cell_no':user.cell_no, 'email':user.email, 
-        'city':user.city,    'street':user.street,    'house_no':user.house_no,    'enter_no':user.enter_no,    'building':user.building,    'zip_id':user.zip_id,    'pob':user.pob}))
-    
+        sessionStorage.setItem("User",JSON.stringify({'first_name': user.data.first_name, 'last_name':user.data.last_name,  'cell_no':user.data.cell_no, 'email':user.data.email, 
+        'city':user.data.city,    'street':user.data.street,    'house_no':user.data.house_no,    'enter_no':user.data.enter_no,    'building':user.data.building,    'zip_id':user.data.zip_id,    'pob':user.data.pob}))
+ 
       }
 
   };
@@ -340,11 +337,6 @@ return valid;
 
 
 }
-  const OldUser = () => {
-    props.callback(2);
-
-  }
-
 
 
   return (

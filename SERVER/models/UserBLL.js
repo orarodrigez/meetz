@@ -14,13 +14,19 @@ const createUser = async (   {cell_no:cell_no,
   pob:pob}  ) => {
     try
     { 
-      var user=User.find().sort("user_id").limit(1)
+      /*var user=User.find().sort("user_id").limit(1)
       var user_id
     if(user.data==null)
        user_id=1
     else
-       user_id=user.data+1
+       user_id=user.data+1*/
+    var user=await User.find().sort({user_id:-1}).limit(1).exec()
   
+    console.log('user_id:'+user.length);
+        if(user.length===0)
+        user_id=1
+        else
+        user_id=user[0].user_id+1
         const newUser = new User( {cell_no:cell_no,
           email:email,
           password:password,

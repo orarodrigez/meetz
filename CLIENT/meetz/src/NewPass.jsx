@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom"
+import axios from 'axios'
 
 
 
@@ -24,24 +25,52 @@ export default function NewPass(props) {
     const navigate = useNavigate()
 
   const [email, setEmail] = useState('');
+  const [send, setSend] = useState(false);
+  const [notExist, setNotExist] = useState(false);
+  const [pwdNew, setPwdTemp] = useState(false);
   const [pwd, setPwd] = useState('');
-  const [cookies, setCookie] = useCookies(['user']);
-  const handle = () => {
-    setCookie('email', email, { path: '/' });
-    setCookie('Password', pwd, { path: '/' });
- };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-  const NewUser = (e) => {
-    console.log('event')
-    props.callback('1') 
-  };
+  const [newPwd, setNewPwd] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [pwdMessage, setPwdMessage] = useState('');
+  const [newPwdMessage, setNewPwdMessage] = useState('');
+   async function sendEmail  () {
+    if (!send)
+    {
+    var user = await  axios.post(url+'/checkUserEmail/',{email:email}) 
+    console.log(user)
+    if (user.data!=null) 
+     {
+        setNotExist(false)
+       user = await  axios.post(url+'/sendNewPwd/',{email:email}) 
+       if (user!=null)
+          setSend(true);
+        
+        
+    }
+    else
+      setNotExist(true)
+    }
+    else
+     {
+      savePwd();
+     }
+    };
+    async function savePwd  () {
+      var user = await  axios.post(url+'/checkUser/',{email:email,password:pwd}) 
+      console.log(user)
+      if (user.data!=null) 
+       {
+         user = await  axios.post(url+'/NewPassword/',{email:email,password:newPwd}) 
+         if (user!=null)
+           setPwdNew(true);
+       }
+      else
+        setNotExist(true)
+  
+       
+      };
+
+
   return (
     
          <div className='hh' style={{maxWidth:widthP*0.6,marginRight:widthP*0.2,marginLeft:widthP*0.2}}> 
@@ -50,11 +79,8 @@ export default function NewPass(props) {
 
           <LockOutlinedIcon />
           </Avatar>
-            < h2>התחבר</h2>
-              
-
-              
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ '& > :not(style)': {m: 1}}} >
+            < h2>שכחתי סיסמא</h2>
+      
               <TextField
                 margin="normal"
                 required
@@ -63,11 +89,13 @@ export default function NewPass(props) {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                value={email}
-
+                onChange={(e)=>setEmail(e.target.value)}
+                helperText={emailMessage}
+                error={emailMessage!=''}
               />
               <br/>
-              <TextField
+              {send&&<> <TextField
+               style ={{width:'80%',fontSize:'20px'}}
                 margin="normal"
                 required
                 name="password"
@@ -75,34 +103,44 @@ export default function NewPass(props) {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                value={pwd}
-              /><br/>
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary"  />}
-                label="זכור אותי"
-                onClick={handle}
-              /><br/>
+                onChange={(e)=>setPwd(e.target.value)}
+                helperText={pwdMessage}
+                error={pwdMessage!=''}
+              /> 
+              <TextField
+              style ={{width:'80%',fontSize:'20px'}}
+               margin="normal"
+               required
+               name="new_password"
+               label=" סיסמא חדשה"
+               type="password"
+               id="new_password"
+               autoComplete="current-new_password"
+               onChange={(e)=>setNewPwd(e.target.value)}
+               helperText={newPwdMessage}
+               error={NewpwdMessage!=''}
+             /></>}<br/>
               <Button
-                type="submit"
-                
+                sx={{  mt: 3, mb: 2 }}
+                onClick={sendEmail}
                 variant="contained"
+               
+                size='large'
+                style={{fontSize:'20px'}}
                 
               >
               
-                התחבר
+                {!send?שלח:שמור}
               </Button>  
-                  
-                   <br/><br/>
+              {send&&!pwdNew&&<p>סיסמא חדשה נשלחה לכתובת דואל:{email}</p> }
+              {!send&&notExist&&<p>כתובת דואר אלקטרוני לא קיימת במאגר הלקוחות</p> }
+              {send&&notExist&&<p>סיסמא זמנית שגויה</p> }
+              {pwdNew&&<p> סיסמא שונתה בהצלחה</p> }
              
                
               
-            </Box>
-            <Link href="#" >
-                    שכחת סיסמא?
-                  </Link><br/><br/>
-          <Link href="#" onClick={NewUser} >
-                    אין לך חשבון? פתח חשבון
-                  </Link>
+ 
+          
           </div>
    
   );

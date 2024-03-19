@@ -12,5 +12,5 @@ reciet:{required:true,type:string}
 
 
 const model= mongoose.model("Order",OrderSchema)
-model.exports=model;
+module.exports=model;
 

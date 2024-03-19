@@ -7,6 +7,18 @@ h1 {
   color: rgba(26, 44, 15, 0.87);
 
 }
+h2 {
+  font-size: 1.2em;
+  line-height: 0.7;
+  color: rgba(26, 44, 15, 0.87);
+
+}
+h3 {
+  font-size: 0.9em;
+  line-height: 0.7;
+  color: rgba(110, 110, 110, 0.87);
+
+}
 body {
   margin: 0 ;
   min-height:100vh;
@@ -41,10 +53,19 @@ text-align: center;
   border: 2px solid rgba(0, 0, 0, 0.18);
   padding: 20px;
   box-shadow: 0px 0px 20px rgba(92, 92, 92, 0.4);
+  
   text-align: center;
 
 }
+.showcert{
+  border-radius: 5px;
+  border: 2px solid rgba(0, 0, 0, 0.18);
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(92, 92, 92, 0.4);
+  
+  text-align: center;
 
+}
 footer {
  
   position: absolute;

@@ -1,18 +1,25 @@
 const Product = require("./ProductsModel")
 
-const createProduct = async (prodName,price,description,picture1,picture2,picture3,stock) => {
+const createProduct = async ({prodName:prodName,price:price,description:description,picture1:picture1,picture2:picture2,picture3:picture3,stock:stock}) => {
     try
     {
-       var prodId=Product.find().sort({prod_id:-1}).limit(1)
-        
-        const newProduct = new Product({prodName,price,description,picture1,picture2,picture3,stock,prodId})
+       var prod=await Product.find().sort({prodId:-1}).limit(1).exec()
+      
+ console.log('prod_id:'+prod.length);
+     if(prod.length===0)
+       prod_id=1
+     else
+      prod_id=prod[0].prodId+1
+   
+    
+        const newProduct = new Product({prodName:prodName,price:price,description:description,picture1:picture1,picture2:picture2,picture3:picture3,stock:stock,prodId:prod_id})
         console.log(newProduct)
          await newProduct.save()  
          console.log("Product Created")
         return newProduct
     }
-    catch
-    {   console.log("fail to create Product")
+    catch(e)
+    {   console.log("fail to create Product"+e)
         return null
     }
 }
@@ -50,7 +57,7 @@ const GetAllProduct = async () => {
     try
     {
         const products= await Product.find()
-
+console.log(products)
         if (products.length>0)
           return products
         else

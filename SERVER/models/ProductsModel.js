@@ -24,5 +24,5 @@ prodId:{required:true,type:Number}
 
 
 const model= mongoose.model("Product",ProductSchema)
-model.exports=model;
+module.exports=model;
 

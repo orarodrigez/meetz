@@ -2,18 +2,43 @@ import React from 'react'
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
+import { useState , useEffect} from 'react'
+
 export default function Product(props) {
   let {product}=props;
+  const [imageData, setImageData] = useState(props.product.picture1.data);
+  const [imageUrl, setImageUrl] = useState('');
+
+  const [BufferData, setBufferData] = useState(props.product.picture1.data);
+
+  const initillize=()=>{
+  
+    const imageBlob = new Blob([imageData.data], { type: 'image/jpeg' });
+    const imageUrl = URL.createObjectURL(imageBlob);
+    setImageUrl(imageUrl);
+    console.log(URL.revokeObjectURL(imageUrl))
+}
+
+  useEffect(() => {
+    
+    initillize()
+  },[imageData])
 
   return (
     <div /*class="hh"*/> 
    
-    <Card sx={{ maxWidth: 345 }}>
+   <Card sx={{ maxWidth: 545 }}>
       <CardMedia
         component="img"
-        alt={product.name}
+        alt={product.prodName}
         height="140"
-        image={product.picture}
+        src ={imageUrl}
+        /*src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}*/
+
+
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import { useState , useEffect} from 'react'
+import {Buffer} from 'buffer';
 
 export default function Product(props) {
   let {product}=props;
@@ -35,8 +36,9 @@ export default function Product(props) {
         component="img"
         alt={product.prodName}
         height="140"
-        src ={imageUrl}
+        
         /*src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}*/
+        src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}
 
 
       />

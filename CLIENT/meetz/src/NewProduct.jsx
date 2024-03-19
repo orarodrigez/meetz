@@ -85,7 +85,7 @@ export default function NewProduct() {
       
         if  (img1File.name!=null)   
         {
-          const semiTransparentRedPng = await sharp({
+ /*          const semiTransparentRedPng = await sharp({
             create: {
               width: 48,
               height: 48,
@@ -94,8 +94,9 @@ export default function NewProduct() {
             }
           })
             .png()
-            .toBuffer();
-            formData.append('file', img1File, img1FileName);
+            .toBuffer(); */
+
+           formData.append('file', img1File, img1FileName);
         }
         if  (img2File.name!=null)   
            formData.append('file', img2File, img2FileName); 

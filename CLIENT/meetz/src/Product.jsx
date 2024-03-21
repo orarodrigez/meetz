@@ -5,57 +5,50 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import { useState , useEffect} from 'react'
+import { useState , useEffect,useRef} from 'react'
 import {Buffer} from 'buffer';
+import Box from '@mui/material/Box';
 
 export default function Product(props) {
   let {product}=props;
   const [imageData, setImageData] = useState(props.product.picture1.data);
-  const [imageUrl, setImageUrl] = useState('');
 
-  const [BufferData, setBufferData] = useState(props.product.picture1.data);
-
-  const initillize=()=>{
-  
-    const imageBlob = new Blob([imageData.data], { type: 'image/jpeg' });
-    const imageUrl = URL.createObjectURL(imageBlob);
-    setImageUrl(imageUrl);
-    console.log(URL.revokeObjectURL(imageUrl))
-}
-
-  useEffect(() => {
-    
-    initillize()
-  },[imageData])
+  const windowWidth = useRef(window.innerWidth);
+  const widthP=windowWidth.current>800?windowWidth.current/4:windowWidth.current
+  const windowHeight = useRef(window.innerHeight);
+  const Height =windowHeight.current>800?windowHeight.current/4:windowHeight.current
 
   return (
-    <div /*class="hh"*/> 
-   
-   <Card sx={{ maxWidth: 545}}>
+    <div  style={{margin:'3%'}} className='card' >
+
+   <Card  sx={{ width: widthP*0.6,minWidth: 250}} >
       <CardMedia
         component="img"
         alt={product.prodName}
-        height="140"
-        
+        height={Height*0.7}
         /*src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}*/
         src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}
 
 
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        
+        <Typography gutterBottom variant="h5" component="div"         height={Height*0.2}>
            {product.prodName}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary"         height={Height*0.2}    >
           {
             product.description
           }
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">הוסף לעגלה</Button>
+      
+      
+      <CardActions ><Box display={'flex'}  flexGrow={1} > 
+        <Button size="small">הוסף לעגלה</Button></Box>
         <Button size="small">הצג מוצר</Button>
       </CardActions>
+      
     </Card>
 
     

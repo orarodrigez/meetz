@@ -88,11 +88,11 @@ setShowCert(false)
     
     { oldUser!=null&&<Bar user={oldUser} callback={callBack}/>}
     <RtlProvider>
-    <div  style={{ minHeight: '60vh',  display: 'flex', justifyContent: 'center',alignItems:'center',textAlign:'center'}}>
-    {productList&& <ProductList products={productList}/>}
+    <div  style={{  minHeight: '60vh',  textAlign:'center'}}>
+
+    {!showCert&&!showUser&&!newUser&&productList&&<ProductList products={productList}/>}
      {/*<NewProduct/>*/}
-      
-      {newProduct&&<MainLayout  children={<NewProduct />}/>}
+      {/*newProduct&&<MainLayout  children={<NewProduct />}/>*/}
      {newUser&&<MainLayout children={<SignUp callback={callBack}/>}/>}
      {showUser&&<MainLayout  children={<ShowUser/>}/>}
      {showCert&&<MainLayout  children={<ShowCert/>}/>}

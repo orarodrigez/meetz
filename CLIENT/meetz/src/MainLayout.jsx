@@ -4,7 +4,7 @@ import React from 'react'
 export default function MainLayout({children}) {
   return (
     
-    <div   >
+    <div  style={{display: 'flex', justifyContent: 'center'}} >
  
 
       {children}

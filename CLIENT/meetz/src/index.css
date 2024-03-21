@@ -20,9 +20,10 @@ h3 {
 
 }
 body {
+  background-color: rgb(255, 255, 255);
   margin: 0 ;
   min-height:100vh;
-justify-items: center;
+  justify-items: center;
   font-size: 16px;
   position: relative;
   font-family: Arial, sans-serif;
@@ -86,5 +87,17 @@ footer {
 
 }
 
+
+.card{
+  border-color:#00000073 ;
+  border: 1px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.685);
+  transition: .1s;
+
+}
+
+.card:hover{
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.568);
+}
 
 

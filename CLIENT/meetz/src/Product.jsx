@@ -31,7 +31,7 @@ export default function Product(props) {
   return (
     <div /*class="hh"*/> 
    
-   <Card sx={{ maxWidth: 545 }}>
+   <Card sx={{ maxWidth: 545}}>
       <CardMedia
         component="img"
         alt={product.prodName}

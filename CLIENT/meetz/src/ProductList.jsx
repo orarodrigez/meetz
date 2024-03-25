@@ -1,7 +1,8 @@
 import React from 'react';
-import Product from './Product';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Product from './ProductItem';
+import ProductItem from './ProductItem';
 
 
 export default function ProductList(props) {
@@ -17,7 +18,7 @@ export default function ProductList(props) {
         {
           props.products.map(product =>  
            
-            <Product
+            <ProductItem
               key={product._id}
               product={product}  />
           

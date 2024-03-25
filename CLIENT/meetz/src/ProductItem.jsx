@@ -8,8 +8,11 @@ import Button from '@mui/material/Button';
 import { useState , useEffect,useRef} from 'react'
 import {Buffer} from 'buffer';
 import Box from '@mui/material/Box';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
+import IconButton from '@mui/material/IconButton';
 
-export default function Product(props) {
+export default function ProductItem(props) {
   let {product}=props;
   const [imageData, setImageData] = useState(props.product.picture1.data);
 
@@ -17,23 +20,28 @@ export default function Product(props) {
   const widthP=windowWidth.current>800?windowWidth.current/4:windowWidth.current
   const windowHeight = useRef(window.innerHeight);
   const Height =windowHeight.current>800?windowHeight.current/4:windowHeight.current
-
+  const handleClickCart = (event) => {
+  
+  };
+  const handleClickProduct = (event) => {
+  
+  };
   return (
     <div  style={{margin:'3%'}} className='card' >
 
-   <Card  sx={{ width: widthP*0.6,minWidth: 250}} >
+   <Card  sx={{ width: widthP*0.6,minWidth: 265}} >
       <CardMedia
         component="img"
         alt={product.prodName}
-        height={Height*0.7}
+        height={Height*0.9}
         /*src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}*/
         src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}
 
 
       />
-      <CardContent>
+      <CardContent >
         
-        <Typography gutterBottom variant="h5" component="div"         height={Height*0.2}>
+        <Typography gutterBottom variant="h5" component="div"         height={Height*0.12}>
            {product.prodName}
         </Typography>
         <Typography variant="body2" color="text.secondary"         height={Height*0.2}    >
@@ -44,21 +52,23 @@ export default function Product(props) {
       </CardContent>
       
       
-      <CardActions ><Box display={'flex'}  flexGrow={1} > 
-        <Button size="small">הוסף לעגלה</Button></Box>
-        <Button size="small">הצג מוצר</Button>
+      <CardActions  ><Box display={'flex'}  flexGrow={1} > 
+  
+              <IconButton onClick={handleClickCart} disableRipple > 
+           
+              <AddShoppingCartOutlinedIcon style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' />
+            </IconButton>
+        </Box>
+        <IconButton onClick={handleClickProduct} disableRipple > 
+           
+           <VisibilityOutlinedIcon   style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' />
+         </IconButton>
+    
       </CardActions>
       
     </Card>
 
-    
-  {  /*  prod_name:{required:true,type:string},
-price:{required:true,type:string},
-description:{required:true,type:string},
-picture:{required:true,type:string},
-stock:{required:true,type:int},
-  prod_id:{required:true,type:int}*/}
-
+  
 
     </div>
   )

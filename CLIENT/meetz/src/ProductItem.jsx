@@ -11,15 +11,42 @@ import Box from '@mui/material/Box';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import IconButton from '@mui/material/IconButton';
+import Dialog from '@mui/material/Dialog';
+import ProductDetails from './ProductDetails';
+import CloseIcon from '@mui/icons-material/Close';
+   import Modal from '@mui/material/Modal';
 
 export default function ProductItem(props) {
   let {product}=props;
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const [imageData, setImageData] = useState(props.product.picture1.data);
 
   const windowWidth = useRef(window.innerWidth);
-  const widthP=windowWidth.current>800?windowWidth.current/4:windowWidth.current
+  const widthP=windowWidth.current>800?windowWidth.current/2:windowWidth.current
   const windowHeight = useRef(window.innerHeight);
   const Height =windowHeight.current>800?windowHeight.current/4:windowHeight.current
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  maxWidth: widthP,
+  height:Height*2,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  
+};
+
   const handleClickCart = (event) => {
   
   };
@@ -27,9 +54,9 @@ export default function ProductItem(props) {
   
   };
   return (
-    <div  style={{margin:'3%'}} className='card' >
+    <div  style={{margin:'2%'}} className='card' >
 
-   <Card  sx={{ width: widthP*0.6,minWidth: 265}} >
+   <Card  sx={{ width: widthP*0.7,minWidth: 265,maxWidth: 365}} >
       <CardMedia
         component="img"
         alt={product.prodName}
@@ -59,7 +86,7 @@ export default function ProductItem(props) {
               <AddShoppingCartOutlinedIcon style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' />
             </IconButton>
         </Box>
-        <IconButton onClick={handleClickProduct} disableRipple > 
+        <IconButton onClick={handleClickOpen} disableRipple > 
            
            <VisibilityOutlinedIcon   style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' />
          </IconButton>
@@ -67,9 +94,22 @@ export default function ProductItem(props) {
       </CardActions>
       
     </Card>
-
-  
-
-    </div>
+    <Modal
+        open={open}
+        onClose={handleClose}
+       
+      >
+          <Box sx={style}>
+          <IconButton
+              
+              color="inherit"
+              onClick={handleClose}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+        <ProductDetails product={product}/></Box>
+        </Modal>
+            </div>
   )
 }

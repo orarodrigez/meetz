@@ -9,7 +9,7 @@ export default function ProductDetails({ product }) {
   const [imageData, setImageData] = useState(product.picture1.data);
 
   const windowWidth = useRef(window.innerWidth);
-  const widthP=windowWidth.current>800?windowWidth.current/2:windowWidth.current
+  const widthP=windowWidth.current>800?windowWidth.current/3:windowWidth.current
   const windowHeight = useRef(window.innerHeight);
   const Height =windowHeight.current>800?windowHeight.current/2:windowHeight.current
   const handleClickCart = (event) => {

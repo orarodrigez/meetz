@@ -19,11 +19,24 @@ const Height =windowHeight.current>800?windowHeight.current/3:windowHeight.curre
     );
   };
 
+  
+  
   return (
     <div className="image-slider" >
       <button className="arrow left-arrow"  onClick={goToPrevious}>&lt;</button>
       <img src={images[currentImageIndex]} alt={`Image ${currentImageIndex}`} style={{ maxHeight: Height}}/>
       <button className="arrow right-arrow" onClick={goToNext}>&gt;</button>
+      <div className="slideshowDots">
+        {images.map((_, idx) => (
+          <div
+            key={idx}
+            className={`slideshowDot${currentImageIndex === idx ? " active" : ""}`}
+            onClick={() => {
+              setCurrentImageIndex(idx);
+            }}
+          ></div>
+        ))}
+      </div>
     </div>
   );
 }

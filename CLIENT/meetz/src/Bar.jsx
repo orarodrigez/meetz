@@ -34,7 +34,7 @@ export default function Bar(props) {
   }));
   
   const handleClick = (event) => {
-    
+    setShowCert(null);
     if (user==null)
        setoldUser(event.currentTarget);
     else
@@ -43,37 +43,40 @@ export default function Bar(props) {
        }
   };
   const handleClickCart = (event) => {
-    if (event.nativeEvent.type=='mouseout')
+ 
+   setoldUser(null);
       if (showCert==null)
       {
+        
         setShowCert(event.currentTarget);
       
-        setoldUser(null);
+        
       }
       else
       {
-          setShowCert(null);
+        props.callback(5);
       }
-    else
-      props.callback(5);
+    
+     
   };
   useEffect(() => {
         
     initillize()
   },[])
   const handleClose = (event) => {
-    if (event.nativeEvent.type=='mouseout')
-    { console.log(event.nativeEvent)
+    
         setoldUser(null);
-        setShowCert(null);
-      
-    }
+       
+        
+          setShowCert(null);
+        
+    
   };
 
   const openOlduser = Boolean(oldUser);
   const idOldUser = openOlduser ? 'simple-popover' : undefined;
   const openShowCert = Boolean(showCert);
-  const idShowCert = openShowCert ? 'mouse-over-popover': undefined;
+  const idShowCert = openShowCert ? 'simple-popover': undefined;
 
  
   
@@ -117,10 +120,7 @@ export default function Bar(props) {
             <Toolbar>
               
             <Box display={'flex'}  flexGrow={1} >   
-            <IconButton  aria-owns={openShowCert ? 'mouse-over-popover' : undefined}
-             
-              onMouseEnter={handleClickCart}
-              onMouseLeave={handleClose}  onClick={handleClickCart}  >
+            <IconButton   onClick={handleClickCart} disableRipple  >
               <ShoppingBagOutlinedIcon fontSize='large' />
             </IconButton> 
                {user==null&&<IconButton onClick={handleClick} disableRipple > 
@@ -163,15 +163,18 @@ export default function Bar(props) {
         anchorOrigin={{
           vertical: 'center',
           horizontal: 'left',
-        }}>
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        >
         <SignInSide callback={Sign}/>
   
    </Popover> 
    <Popover
         id={idShowCert}
-        sx={{
-          pointerEvents: 'none',
-        }}
+       
         
         open={openShowCert}
         anchorEl={showCert}
@@ -185,7 +188,7 @@ export default function Bar(props) {
           vertical: 'top',
           horizontal: 'left',
         }}
-        disableRestoreFocus> <ShortCart />
+        > <ShortCart />
         </Popover>
         
     

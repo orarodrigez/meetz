@@ -98,16 +98,17 @@ const style = {
         open={open}
         onClose={handleClose}
        
-      >
+      >   
           <Box sx={style}>
-          <IconButton
+            <div style={{direction:'rtl'}}>
+         <IconButton
               
               color="inherit"
               onClick={handleClose}
               aria-label="close"
             >
-              <CloseIcon />
-            </IconButton>
+              <CloseIcon /></IconButton>
+          </div>
         <ProductDetails product={product}/></Box>
         </Modal>
             </div>

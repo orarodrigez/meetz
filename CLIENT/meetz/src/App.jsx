@@ -81,6 +81,11 @@ setShowCert(false)
     setShowUser(true)
     else if(value=='5')
     setShowCert(true)
+    else if(value=='6')
+    {setShowUser(false)
+      setNewProduct(false)
+      setNewUser(false)
+    setShowCert(false)}
 }
 
   return (

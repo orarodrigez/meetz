@@ -4,9 +4,8 @@ import Box from '@mui/material/Box';
 import Product from './ProductItem';
 import ProductItem from './ProductItem';
 
-
 export default function ProductList(props) {
-   
+  
 
     return (
       <div  style={{marginTop:'150px',marginBottom:'30px'}} >
@@ -14,13 +13,15 @@ export default function ProductList(props) {
 
 <Grid container   direction="row"
   justifyContent="center"
-  alignItems="center" >
-        {
+  alignItems="center"  >
+        { 
           props.products.map(product =>  
-           
-            <ProductItem
+          
+            <ProductItem 
+          
               key={product._id}
-              product={product}  />
+              product={product}  
+             />
           
           )
         }</Grid>    

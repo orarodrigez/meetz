@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import { useState , useEffect,useRef} from 'react'
+import {useContext,  useState , useEffect,useRef} from 'react'
 import {Buffer} from 'buffer';
 import Box from '@mui/material/Box';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -15,10 +15,14 @@ import Dialog from '@mui/material/Dialog';
 import ProductDetails from './ProductDetails';
 import CloseIcon from '@mui/icons-material/Close';
    import Modal from '@mui/material/Modal';
+   import { CartContext } from './context/cart'
+   import ToggleButton from '@mui/material/ToggleButton';
+
 
 export default function ProductItem(props) {
   let {product}=props;
   const [open, setOpen] = React.useState(false);
+  const { cartItems, addToCart } = useContext(CartContext)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,7 +37,7 @@ export default function ProductItem(props) {
   const widthP=windowWidth.current>800?windowWidth.current/2:windowWidth.current
   const windowHeight = useRef(window.innerHeight);
   const Height =windowHeight.current>800?windowHeight.current/4:windowHeight.current
-const style = {
+const style = {     
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -48,30 +52,31 @@ const style = {
 };
 
   const handleClickCart = (event) => {
-  
+     addToCart(product)
   };
-  const handleClickProduct = (event) => {
-  
-  };
+
   return (
     <div  style={{margin:'2%'}} className='card' >
 
-   <Card  sx={{ width: widthP*0.7,minWidth: 265,maxWidth: 365}} >
-      <CardMedia
+   <Card  sx={{ width: widthP*0.7,minWidth: 265,maxWidth: 365}}     >
+   
+      <CardMedia   
         component="img"
         alt={product.prodName}
         height={Height*0.9}
         /*src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}*/
         src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}
-
+        onc
 
       />
-      <CardContent >
+      <CardContent   >
         
-        <Typography gutterBottom variant="h5" component="div"         height={Height*0.12}>
+        <Typography  gutterBottom variant="h5" component="div"    tabIndex={0}
+      onClick ={handleClickOpen}      height={Height*0.12}>
+          
            {product.prodName}
         </Typography>
-        <Typography variant="body2" color="text.secondary"         height={Height*0.2}    >
+        <Typography variant="body2" color="text.secondary"       height={Height*0.2}    >
           {
             product.description
           }
@@ -79,16 +84,16 @@ const style = {
       </CardContent>
       
       
-      <CardActions  ><Box display={'flex'}  flexGrow={1} > 
+      <CardActions ><Box display={'flex'}  flexGrow={1} > 
   
-              <IconButton onClick={handleClickCart} disableRipple > 
+              <IconButton onClick={handleClickCart} disableRipple  > 
            
-              <AddShoppingCartOutlinedIcon style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' />
+              <AddShoppingCartOutlinedIcon style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' tabIndex={0}/>
             </IconButton>
         </Box>
         <IconButton onClick={handleClickOpen} disableRipple > 
            
-           <VisibilityOutlinedIcon   style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' />
+           <VisibilityOutlinedIcon   style={{paddingRight:'1vw',paddingLeft:'1vw'}}  fontSize='large' tabIndex={0}/>
          </IconButton>
     
       </CardActions>

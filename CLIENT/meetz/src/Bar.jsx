@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState , useEffect,useRef} from 'react'
+import { useState , useEffect,useRef,useContext } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,8 +12,13 @@ import Popover from '@mui/material/Popover';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import SignInSide from './Sign-in';
 import ShortCart from './ShortCart';
+import { CartContext } from './context/cart.jsx'
+import Badge from '@mui/material/Badge';
+
 
 export default function Bar(props) {
+  const { cartItems, addToCart , removeFromCart} = useContext(CartContext)
+
   const [user, setUser] = useState(null);
   const [oldUser, setoldUser] = useState(null);
   const [showCert, setShowCert] = useState(null);
@@ -117,11 +122,12 @@ export default function Bar(props) {
     
       <AppBar  style={{ 
          background: '#ffff'}} >
-            <Toolbar>
+            <Toolbar aria-labelledby>
               
             <Box display={'flex'}  flexGrow={1} >   
             <IconButton   onClick={handleClickCart} disableRipple  >
-              <ShoppingBagOutlinedIcon fontSize='large' />
+            <Badge badgeContent={cartItems.length} color="secondary">
+              <ShoppingBagOutlinedIcon fontSize='large' aria-label='cart' /></Badge>
             </IconButton> 
                {user==null&&<IconButton onClick={handleClick} disableRipple > 
            
@@ -151,7 +157,7 @@ export default function Bar(props) {
         
                
           
-          </Box> <img  height="120ch" width="120ch"  src={logoImg} ></img> 
+          </Box> <img  height="120ch" width="120ch"  src={logoImg} onClick={()=>props.callback(6)} ></img> 
           
           <Popover
         
@@ -179,9 +185,9 @@ export default function Bar(props) {
         open={openShowCert}
         anchorEl={showCert}
         onClose={handleClose}
-        style={{marginLeft:'2%'}}
+        style={{marginLeft:'1%'}}
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'center',
           horizontal: 'left',
         }}
         transformOrigin={{

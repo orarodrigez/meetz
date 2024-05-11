@@ -11,13 +11,14 @@ import logoImg from './images/logo13.jpg';
 import Popover from '@mui/material/Popover';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import SignInSide from './Sign-in';
-import ShortCart from './ShortCart';
+import ShowCart from './ShowCart.jsx';
+import Cart from './Cart.jsx';
 import { CartContext } from './context/cart.jsx'
 import Badge from '@mui/material/Badge';
 
 
 export default function Bar(props) {
-  const { cartItems, addToCart , removeFromCart} = useContext(CartContext)
+  const { cartItems, addToCart , removeFromCart,getQuantity} = useContext(CartContext)
 
   const [user, setUser] = useState(null);
   const [oldUser, setoldUser] = useState(null);
@@ -126,7 +127,7 @@ export default function Bar(props) {
               
             <Box display={'flex'}  flexGrow={1} >   
             <IconButton   onClick={handleClickCart} disableRipple  >
-            <Badge badgeContent={cartItems.length} color="secondary">
+            <Badge badgeContent={getQuantity()} color="secondary">
               <ShoppingBagOutlinedIcon fontSize='large' aria-label='cart' /></Badge>
             </IconButton> 
                {user==null&&<IconButton onClick={handleClick} disableRipple > 
@@ -194,7 +195,7 @@ export default function Bar(props) {
           vertical: 'top',
           horizontal: 'left',
         }}
-        > <ShortCart />
+        > <Cart />
         </Popover>
         
     

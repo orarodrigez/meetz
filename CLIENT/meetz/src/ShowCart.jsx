@@ -1,8 +1,7 @@
 import React from 'react'
 import { useState , useEffect,useRef} from 'react'
-import RtlProvider from './RtlProvider'
 
-export default function ShortCart(props) {
+export default function ShowCart(props) {
   const windowWidth = useRef(window.innerWidth);
   const widthP=windowWidth.current>500?windowWidth.current/2:windowWidth.current
  

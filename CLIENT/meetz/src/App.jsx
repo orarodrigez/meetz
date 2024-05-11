@@ -16,8 +16,8 @@ import Cookies from "js-cookie";
 import MainLayout from './MainLayout'
 import Popover from '@mui/material/Popover';
 import ShowUser from './ShowUser'
-import ShowCert from './ShortCart'
-
+import ShowCert from './ShowCart'
+import Cart from './Cart'
 
 
 function App() {
@@ -100,7 +100,7 @@ setShowCert(false)
       {/*newProduct&&<MainLayout  children={<NewProduct />}/>*/}
      {newUser&&<MainLayout children={<SignUp callback={callBack}/>}/>}
      {showUser&&<MainLayout  children={<ShowUser/>}/>}
-     {showCert&&<MainLayout  children={<ShowCert/>}/>}
+     {showCert&&<MainLayout  children={<Cart/>}/>}
      {/*<Routes >
      {<Route path={'/'} element={<ProductList />}/>  }
      <Route path={'/NewPass'} element={<NewPass />} />   

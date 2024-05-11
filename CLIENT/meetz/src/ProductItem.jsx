@@ -66,7 +66,7 @@ const style = {
         height={Height*0.9}
         /*src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}*/
         src={`data:${imageData.contentType};base64,${Buffer.from(imageData.data).toString('base64')}`}
-        onc
+      
 
       />
       <CardContent   >

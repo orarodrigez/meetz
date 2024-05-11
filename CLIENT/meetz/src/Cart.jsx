@@ -1,23 +1,25 @@
 import { useContext } from 'react'
 import { CartContext } from './context/cart'
+import Box from '@mui/material/Box';
+
 export default function Cart() {
-    const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal } = useContext(CartContext)
+    const { cartItems, addToCart, removeFromCart, clearCart, getCartTotal,gerQuantity } = useContext(CartContext)
 
     return (
       <>
-      <div >
+      <div className='showcert' >
   <h1 >Cart</h1>
   <div >
     {cartItems.map((item) => (
-      <div  key={item.id}>
+      <div  key={item.prodId}>
         <div >
           <img src={item.thumbnail} alt={item.title} />
           <div>
-            <h1 >{item.title}</h1>
+            <h1 >{item.prodName}</h1>
             <p >{item.price}</p>
           </div>
         </div>
-        <div >
+        <div ><Box display={'flex'}  flexGrow={1} justifyContent={'center'}> 
           <button
              onClick={() => {
               addToCart(item)
@@ -32,7 +34,8 @@ export default function Cart() {
             }}
           >
             -
-          </button>
+          </button></Box>
+          <p >{item.price * item.quantity}</p>
         </div>
       </div>
     ))}
@@ -40,7 +43,7 @@ export default function Cart() {
   {
     cartItems.length > 0 ? (
       <div >
-    <h1 >Total: ${getCartTotal()}</h1>
+    <h1 >סה"כ: {getCartTotal()} ש"ח</h1>
     <button
       
       onClick={() => {

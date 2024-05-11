@@ -12,12 +12,7 @@ export default function ProductDetails({ product }) {
   const widthP=windowWidth.current>800?windowWidth.current/3:windowWidth.current
   const windowHeight = useRef(window.innerHeight);
   const Height =windowHeight.current>800?windowHeight.current/2:windowHeight.current
-  const handleClickCart = (event) => {
-  
-  };
-  const handleClickProduct = (event) => {
-  
-  };
+
 
   const images = [
      `data:${product.picture1.data.contentType};base64,${Buffer.from(product.picture1.data.data).toString('base64')}`,
